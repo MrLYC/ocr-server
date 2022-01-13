@@ -4,9 +4,12 @@ from ddddocr import DdddOcr
 from typing import List
 from dataclasses import dataclass
 import time
+from starlette.staticfiles import StaticFiles
+from fastapi.openapi.docs import get_swagger_ui_html
 
+app = FastAPI(docs_url=None, redoc_url=None)
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
-app = FastAPI()
 new_model = DdddOcr(show_ad=False)
 old_model = DdddOcr(old=True, show_ad=False)
 
@@ -45,6 +48,17 @@ async def ocr_v2(files: List[UploadFile] = File(...)) -> List[ClassificationResu
 async def ocr_v1(files: List[UploadFile] = File(...)) -> List[ClassificationResult]:
     helper = OcrHelper(model=old_model, files=files)
     return await helper.classification()
+
+
+@app.get("/docs", include_in_schema=False)
+async def custom_swagger_ui_html():
+    return get_swagger_ui_html(
+        openapi_url=app.openapi_url,
+        title="OCR API",
+        oauth2_redirect_url=app.swagger_ui_oauth2_redirect_url,
+        swagger_js_url="/static/swagger-ui-bundle.js",
+        swagger_css_url="/static/swagger-ui.css",
+    )
 
 
 if __name__ == "__main__":
