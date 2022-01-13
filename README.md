@@ -1,0 +1,3 @@
+# ocr-server
+
+ocr server

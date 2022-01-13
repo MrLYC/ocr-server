@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "ocr-server"
+version = "0.1.0"
+description = "ocr server"
+authors = ["imyikong@gmail.com"]
+
+[tool.poetry.dependencies]
+python = ">=3.8,<3.10"
+fastapi = "^0.45.0"
+uvicorn = "^0.11.1"
+ddddocr = "^1.3.1"
+python-multipart = "^0.0.5"
+
+[tool.poetry.dev-dependencies]
+black = {version = "^19.10b0", allow-prereleases = true}
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
